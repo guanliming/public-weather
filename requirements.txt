@@ -1,0 +1,9 @@
+# 中国天气网爬虫依赖
+# 安装命令：pip install -r requirements.txt
+# 注意：已移除对pandas的依赖，使用标准库csv模块保存数据
+
+# 网络请求库 - 用于发送HTTP请求获取页面内容
+requests>=2.25.1
+
+# HTML解析库 - 用于解析天气页面结构
+beautifulsoup4>=4.9.3

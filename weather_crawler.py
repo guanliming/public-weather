@@ -23,7 +23,6 @@ from typing import List, Dict, Optional, Tuple
 
 import requests
 from bs4 import BeautifulSoup
-import pandas as pd
 
 
 class WeatherCrawler:
@@ -473,7 +472,7 @@ class WeatherCrawler:
 
     def save_to_csv(self, partial: bool = False):
         """
-        将天气数据保存到CSV文件
+        将天气数据保存到CSV文件（使用标准库csv模块，无需额外依赖）
 
         Args:
             partial: 是否为部分保存（用于中途保存进度）
@@ -491,23 +490,21 @@ class WeatherCrawler:
         filepath = os.path.join(self.output_dir, filename)
 
         try:
-            # 使用pandas保存，更方便处理
-            df = pd.DataFrame(self.weather_data)
-            df.to_csv(filepath, index=False, encoding='utf-8-sig')
+            # 使用标准库csv模块保存数据
+            with open(filepath, 'w', newline='', encoding='utf-8-sig') as f:
+                if self.weather_data:
+                    # 获取字段名（从第一条记录获取）
+                    fieldnames = self.weather_data[0].keys()
+                    # 创建DictWriter对象
+                    writer = csv.DictWriter(f, fieldnames=fieldnames)
+                    # 写入表头
+                    writer.writeheader()
+                    # 写入所有数据
+                    writer.writerows(self.weather_data)
+            
             print(f"✓ 数据已保存到：{filepath}")
         except Exception as e:
             print(f"⚠ 保存CSV失败：{e}")
-            # 尝试使用标准csv模块
-            try:
-                with open(filepath, 'w', newline='', encoding='utf-8-sig') as f:
-                    if self.weather_data:
-                        fieldnames = self.weather_data[0].keys()
-                        writer = csv.DictWriter(f, fieldnames=fieldnames)
-                        writer.writeheader()
-                        writer.writerows(self.weather_data)
-                print(f"✓ 数据已保存到：{filepath}")
-            except Exception as e2:
-                print(f"⚠ 备用保存方式也失败：{e2}")
 
 
 def main():

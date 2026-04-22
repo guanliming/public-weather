@@ -15,8 +15,7 @@
 - **Python 3.12**：基于WSL环境的Python 3.12版本
 - **requests**：用于发送HTTP请求获取页面内容
 - **BeautifulSoup4**：用于解析HTML页面结构
-- **pandas**：用于数据处理和CSV文件保存
-- **lxml**：高性能XML/HTML解析器
+- **标准库模块**：使用csv、json、time等标准库，无需额外依赖
 
 ## 项目结构
 ```
@@ -37,15 +36,20 @@ public-weather/
 - pip 包管理器
 
 ### 2. 安装依赖
-在WSL环境中执行以下命令：
+在WSL环境中执行以下命令（只需安装2个轻量级依赖）：
 
 ```bash
 # 进入项目目录
 cd /mnt/d/code/public-weather
 
-# 使用指定的Python环境安装依赖
+# 方式1：使用requirements.txt安装
 /home/dawn/miniconda3/envs/temp312/bin/pip install -r requirements.txt
+
+# 方式2：直接安装（更简单）
+/home/dawn/miniconda3/envs/temp312/bin/pip install requests beautifulsoup4
 ```
+
+**注意**：已移除对pandas的依赖，使用Python标准库的csv模块保存数据，大大简化了依赖安装。
 
 ### 3. 配置说明
 爬虫的主要配置在 `weather_crawler.py` 文件的 `WeatherCrawler` 类中：
